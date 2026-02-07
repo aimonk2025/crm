@@ -151,87 +151,120 @@ All tables have **Row Level Security (RLS)** enabled - users can only access the
 
 ---
 
-## Website Integration (Lead Capture)
+## Integrating Your Website Forms
 
-SimpleCRM can capture leads from your existing website. There are 3 ways to integrate:
+Connect your existing website forms to SimpleCRM to automatically capture leads.
 
-### Option 1: Use the Built-in Form Page
+### API Endpoint
 
-SimpleCRM includes a ready-to-use lead form at `/form/lead`. You can:
+```
+POST https://your-crm-domain.com/api/leads
+Content-Type: application/json
 
-- **Link directly**: Add a "Contact Us" button that links to `https://your-crm-domain.com/form/lead`
-- **Embed in iframe**:
-  ```html
-  <iframe
-    src="https://your-crm-domain.com/form/lead"
-    width="100%"
-    height="500"
-    frameborder="0">
-  </iframe>
-  ```
+{
+  "name": "John Doe",           // Required
+  "phone": "+91999999999",      // Required
+  "email": "john@example.com",  // Optional
+  "message": "I need help..."   // Optional
+}
+```
 
-### Option 2: Use the API Directly
+### Response
 
-Send leads from your own forms using the REST API:
+| Status | Response |
+|--------|----------|
+| 200 | `{ "success": true }` |
+| 409 | `{ "error": "This phone number is already registered" }` |
+| 400 | `{ "error": "Invalid form data" }` |
 
-```javascript
-// Your website's form handler
-async function submitLead(formData) {
+---
+
+### React / Next.js Integration
+
+Add this to your existing contact form:
+
+```jsx
+async function handleSubmit(e) {
+  e.preventDefault();
+
   const response = await fetch('https://your-crm-domain.com/api/leads', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      name: formData.name,        // Required
-      phone: formData.phone,      // Required
-      email: formData.email,      // Optional
-      message: formData.message,  // Optional
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      message: formData.message,
     }),
   });
 
   if (response.ok) {
-    // Lead submitted successfully!
-    console.log('Lead captured!');
+    // Show success message
   }
 }
 ```
 
-### Option 3: HTML Form (No JavaScript)
+### HTML / Vanilla JavaScript Integration
 
 ```html
-<form action="https://your-crm-domain.com/api/leads" method="POST">
-  <input type="text" name="name" placeholder="Name" required>
-  <input type="tel" name="phone" placeholder="Phone" required>
-  <input type="email" name="email" placeholder="Email">
-  <textarea name="message" placeholder="Message"></textarea>
+<form id="contact-form">
+  <input type="text" name="name" required>
+  <input type="tel" name="phone" required>
+  <input type="email" name="email">
+  <textarea name="message"></textarea>
   <button type="submit">Submit</button>
 </form>
+
+<script>
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+
+  await fetch('https://your-crm-domain.com/api/leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: form.name.value,
+      phone: form.phone.value,
+      email: form.email.value,
+      message: form.message.value,
+    }),
+  });
+
+  alert('Thank you! We will contact you soon.');
+});
+</script>
 ```
 
-### API Response
+---
 
-**Success (200):**
-```json
-{ "success": true }
+### Using Claude Code to Integrate
+
+If you're using **Claude Code** or **Cursor**, simply tell it:
+
+> "Connect my contact form to SimpleCRM. The API endpoint is `https://my-crm.vercel.app/api/leads` and it needs name, phone, email, and message fields."
+
+Claude Code will:
+1. Find your existing form component
+2. Add the API call to your form handler
+3. Handle success/error states
+
+**Example prompt:**
+```
+I have a contact form in src/components/ContactForm.tsx.
+Connect it to my SimpleCRM at https://my-crm.vercel.app/api/leads.
+The form already has name, phone, email, and message fields.
+Add loading state and success/error handling.
 ```
 
-**Duplicate Phone (409):**
-```json
-{ "error": "This phone number is already registered" }
-```
-
-**Validation Error (400):**
-```json
-{ "error": "Invalid form data", "details": [...] }
-```
+---
 
 ### What Happens When a Lead is Submitted?
 
 1. A new **customer** is created with status "New"
-2. Source is set to "website"
-3. If a message is provided, it's added as a **note**
-4. The customer appears in your CRM dashboard immediately
+2. Source is automatically set to "website"
+3. If a message is provided, it's saved as a **note**
+4. The lead appears in your CRM dashboard immediately
 
 ---
 
