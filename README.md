@@ -151,6 +151,90 @@ All tables have **Row Level Security (RLS)** enabled - users can only access the
 
 ---
 
+## Website Integration (Lead Capture)
+
+SimpleCRM can capture leads from your existing website. There are 3 ways to integrate:
+
+### Option 1: Use the Built-in Form Page
+
+SimpleCRM includes a ready-to-use lead form at `/form/lead`. You can:
+
+- **Link directly**: Add a "Contact Us" button that links to `https://your-crm-domain.com/form/lead`
+- **Embed in iframe**:
+  ```html
+  <iframe
+    src="https://your-crm-domain.com/form/lead"
+    width="100%"
+    height="500"
+    frameborder="0">
+  </iframe>
+  ```
+
+### Option 2: Use the API Directly
+
+Send leads from your own forms using the REST API:
+
+```javascript
+// Your website's form handler
+async function submitLead(formData) {
+  const response = await fetch('https://your-crm-domain.com/api/leads', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: formData.name,        // Required
+      phone: formData.phone,      // Required
+      email: formData.email,      // Optional
+      message: formData.message,  // Optional
+    }),
+  });
+
+  if (response.ok) {
+    // Lead submitted successfully!
+    console.log('Lead captured!');
+  }
+}
+```
+
+### Option 3: HTML Form (No JavaScript)
+
+```html
+<form action="https://your-crm-domain.com/api/leads" method="POST">
+  <input type="text" name="name" placeholder="Name" required>
+  <input type="tel" name="phone" placeholder="Phone" required>
+  <input type="email" name="email" placeholder="Email">
+  <textarea name="message" placeholder="Message"></textarea>
+  <button type="submit">Submit</button>
+</form>
+```
+
+### API Response
+
+**Success (200):**
+```json
+{ "success": true }
+```
+
+**Duplicate Phone (409):**
+```json
+{ "error": "This phone number is already registered" }
+```
+
+**Validation Error (400):**
+```json
+{ "error": "Invalid form data", "details": [...] }
+```
+
+### What Happens When a Lead is Submitted?
+
+1. A new **customer** is created with status "New"
+2. Source is set to "website"
+3. If a message is provided, it's added as a **note**
+4. The customer appears in your CRM dashboard immediately
+
+---
+
 ## Deployment
 
 ### Deploy to Vercel
