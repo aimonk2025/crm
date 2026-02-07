@@ -29,26 +29,16 @@ Built with Next.js 16, React 19, Supabase, and Tailwind CSS.
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/simplecrm.git
-   cd simplecrm
+   git clone https://github.com/aimonk2025/simple-crm.git
+   cd simple-crm
    pnpm install
    ```
 
-2. **Set up Supabase**
-   - Create a new project at [supabase.com](https://supabase.com)
-   - Run the migration files from `supabase/migrations/` in the SQL Editor
-   - Enable Email authentication in Authentication > Providers
+2. **Set up Supabase** (see detailed instructions below)
 
 3. **Configure environment variables**
    ```bash
    cp .env.example .env.local
-   ```
-
-   Edit `.env.local` with your Supabase credentials:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
    ```
 
 4. **Start the development server**
@@ -60,22 +50,117 @@ Built with Next.js 16, React 19, Supabase, and Tailwind CSS.
 
    Visit [http://localhost:3000](http://localhost:3000) and create an account.
 
-## Database Setup
+---
 
-Run these migration files in order in your Supabase SQL Editor:
+## Supabase Setup (Step-by-Step)
 
-1. `supabase/migrations/001_initial_schema.sql` - Core tables
-2. `supabase/migrations/002_timeline_fix.sql` - Timeline improvements
-3. `supabase/migrations/003_form_token.sql` - Lead form token
-4. `supabase/migrations/004_free_enhancements.sql` - Tags and custom fields
+### Step 1: Create a Supabase Project
+
+1. Go to [supabase.com](https://supabase.com) and sign up/login
+2. Click **New Project**
+3. Enter a project name (e.g., "simplecrm")
+4. Set a strong database password (save this!)
+5. Select a region close to you
+6. Click **Create new project** and wait for it to be ready
+
+### Step 2: Get Your API Keys
+
+1. In your Supabase dashboard, go to **Project Settings** (gear icon)
+2. Click **API** in the left sidebar
+3. Copy these values:
+
+| Key | Where to find it | What it's for |
+|-----|------------------|---------------|
+| **Project URL** | Under "Project URL" | `NEXT_PUBLIC_SUPABASE_URL` |
+| **anon/public key** | Under "Project API keys" | `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+| **service_role key** | Under "Project API keys" (click reveal) | `SUPABASE_SERVICE_ROLE_KEY` |
+
+> **Note:** The `service_role` key is secret - never expose it in client-side code!
+
+### Step 3: Run Database Migrations
+
+1. In Supabase dashboard, go to **SQL Editor** (left sidebar)
+2. Click **New query**
+3. Run each migration file **in order**:
+
+**Migration 1: Core Tables**
+- Open `supabase/migrations/001_initial_schema.sql` from this repo
+- Copy the entire contents
+- Paste into SQL Editor and click **Run**
+
+**Migration 2: Row Level Security (RLS)**
+- Open `supabase/migrations/002_rls_policies.sql`
+- Copy, paste, and **Run**
+
+**Migration 3: Timeline Triggers**
+- Open `supabase/migrations/003_timeline_triggers.sql`
+- Copy, paste, and **Run**
+
+**Migration 4: Tags & Custom Fields**
+- Open `supabase/migrations/004_free_enhancements.sql`
+- Copy, paste, and **Run**
+
+> **Tip:** You can also run `supabase/complete_schema.sql` which contains all migrations in one file.
+
+### Step 4: Enable Email Authentication
+
+1. Go to **Authentication** in the left sidebar
+2. Click **Providers**
+3. Make sure **Email** is enabled (it should be by default)
+4. (Optional) Configure SMTP for production email delivery under **SMTP Settings**
+
+### Step 5: Configure Environment Variables
+
+Create `.env.local` in your project root:
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+Replace with your actual values from Step 2.
+
+### Step 6: Verify Setup
+
+1. Start the dev server: `pnpm dev`
+2. Open [http://localhost:3000](http://localhost:3000)
+3. Click **Register** and create an account
+4. If you can log in successfully, Supabase is configured correctly!
+
+---
+
+## Database Schema
+
+SimpleCRM creates these tables:
+
+| Table | Purpose |
+|-------|---------|
+| `customers` | Customer records with name, phone, email, status |
+| `notes` | Text notes attached to customers |
+| `payments` | Payment records with amount, date, mode |
+| `follow_ups` | Scheduled follow-up reminders |
+| `timeline_events` | Activity history for each customer |
+| `tags` | User-defined colored tags |
+| `customer_tags` | Links customers to tags (many-to-many) |
+| `custom_fields` | User-defined field definitions |
+| `custom_field_values` | Field values for each customer |
+
+All tables have **Row Level Security (RLS)** enabled - users can only access their own data.
+
+---
 
 ## Deployment
 
 ### Deploy to Vercel
 
 1. Push your code to GitHub
-2. Import the project in Vercel
-3. Add environment variables in project settings
+2. Import the project in [Vercel](https://vercel.com)
+3. Add environment variables in project settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
 4. Deploy
 
 ### Other Platforms
@@ -85,6 +170,8 @@ SimpleCRM works on any platform that supports Next.js:
 - Render
 - DigitalOcean App Platform
 - Self-hosted with Docker
+
+---
 
 ## Tech Stack
 
@@ -105,7 +192,9 @@ Visit `/docs` in the app for detailed documentation on:
 
 ## Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+**Important:** Send pull requests to the `dev` branch, not `main`.
 
 ## License
 
