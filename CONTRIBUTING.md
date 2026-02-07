@@ -2,14 +2,21 @@
 
 Thank you for your interest in contributing to SimpleCRM! This document provides guidelines and information for contributors.
 
+## Branch Structure
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Stable release branch (protected) |
+| `dev` | Development branch - **send PRs here** |
+
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/yourusername/simplecrm.git`
-3. Create a branch: `git checkout -b feature/your-feature-name`
+2. Clone your fork: `git clone https://github.com/yourusername/simple-crm.git`
+3. Create a branch from `dev`: `git checkout -b feature/your-feature-name dev`
 4. Make your changes
 5. Push to your fork: `git push origin feature/your-feature-name`
-6. Open a Pull Request
+6. Open a Pull Request **to the `dev` branch** (not `main`)
 
 ## Development Setup
 
