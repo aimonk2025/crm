@@ -22,7 +22,7 @@ A simple, self-hosted customer memory system for small businesses.
   </a>
 </p>
 
-Built with Next.js 15, React 19, Supabase, and Tailwind CSS.
+Built with Next.js 16.1, React 19, Supabase, and Tailwind CSS.
 
 ## Features
 
@@ -314,7 +314,7 @@ SimpleCRM works on any platform that supports Next.js:
 
 | Category | Technology |
 |----------|------------|
-| **Framework** | Next.js 15 (App Router) |
+| **Framework** | Next.js 16.1 (App Router, Turbopack) |
 | **Frontend** | React 19, TypeScript |
 | **Styling** | Tailwind CSS, shadcn/ui |
 | **Database** | Supabase (PostgreSQL) |
