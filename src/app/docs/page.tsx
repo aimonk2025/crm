@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import { ArrowRight, Users, Tag, FormInput, Calendar, FileText, CreditCard } from 'lucide-react'
+import { ArrowRight, Users, Tag, FormInput, Calendar, FileText, CreditCard, Globe, Rocket } from 'lucide-react'
 
 export default function DocsPage() {
   return (
@@ -59,17 +59,28 @@ export default function DocsPage() {
       <div className="prose prose-neutral dark:prose-invert max-w-none">
         <h2>Getting Started</h2>
         <p>
-          Ready to set up SimpleCRM? Follow our installation guide to get started in minutes.
+          Ready to set up SimpleCRM? Follow our guides to get started in minutes.
         </p>
       </div>
 
-      <Link
-        href="/docs/setup"
-        className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-      >
-        Installation Guide
-        <ArrowRight className="h-4 w-4" />
-      </Link>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Link
+          href="/docs/setup"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+        >
+          <Rocket className="h-4 w-4" />
+          Installation Guide
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        <Link
+          href="/docs/integration"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90 transition-colors"
+        >
+          <Globe className="h-4 w-4" />
+          Deployment & Integration
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
     </div>
   )
 }
