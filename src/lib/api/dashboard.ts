@@ -107,10 +107,17 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 export async function getRecentActivity(limit = 10): Promise<RecentActivityItem[]> {
   const supabase = createClient()
 
-  // Get recent timeline events
+  // Get recent timeline events with customer names via JOIN
   const { data: events, error } = await supabase
     .from('timeline_events')
-    .select('id, event_type, event_data, created_at, customer_id')
+    .select(`
+      id,
+      event_type,
+      event_data,
+      created_at,
+      customer_id,
+      customers!inner(name)
+    `)
     .order('created_at', { ascending: false })
     .limit(limit * 2) // Get more than needed to filter
 
@@ -124,14 +131,14 @@ export async function getRecentActivity(limit = 10): Promise<RecentActivityItem[
     if (activities.length >= limit) break
 
     const eventData = event.event_data as Record<string, unknown>
-    const customerName = eventData.customer_name as string | undefined
+    const customerName = (event.customers as any)?.name || 'Unknown'
 
     switch (event.event_type) {
       case 'customer_created':
         activities.push({
           id: event.id,
           type: 'customer_created',
-          description: `New customer: ${customerName || 'Unknown'}`,
+          description: `New customer: ${customerName}`,
           timestamp: event.created_at,
           customerId: event.customer_id,
           customerName,
@@ -143,7 +150,7 @@ export async function getRecentActivity(limit = 10): Promise<RecentActivityItem[
           activities.push({
             id: event.id,
             type: 'payment_added',
-            description: `Payment received: ₹${amount.toLocaleString('en-IN')} from ${customerName || 'Unknown'}`,
+            description: `Payment received: ₹${amount.toLocaleString('en-IN')} from ${customerName}`,
             timestamp: event.created_at,
             customerId: event.customer_id,
             customerName,
@@ -154,7 +161,7 @@ export async function getRecentActivity(limit = 10): Promise<RecentActivityItem[
         activities.push({
           id: event.id,
           type: 'follow_up_completed',
-          description: `Follow-up completed: ${customerName || 'Unknown'}`,
+          description: `Follow-up completed: ${customerName}`,
           timestamp: event.created_at,
           customerId: event.customer_id,
           customerName,
