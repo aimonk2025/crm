@@ -337,6 +337,26 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for de
 
 **Important:** Send pull requests to the `dev` branch, not `main`.
 
+### Branch Protection
+
+This repository has branch protection configured:
+
+- **`main` branch** - Protected branch, requires pull requests from collaborators
+  - Only the repository owner can push directly
+  - No force pushes allowed
+  - Branch cannot be deleted
+
+- **`dev` branch** - Default development branch
+  - All feature development happens here
+  - Pull requests from `dev` to `main` for releases
+
+**Workflow for contributors:**
+1. Fork the repository
+2. Create a feature branch from `dev`
+3. Submit a pull request to `dev` (not `main`)
+4. After review, changes will be merged to `dev`
+5. Repository owner periodically merges `dev` to `main` for releases
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
