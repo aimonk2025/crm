@@ -20,17 +20,17 @@ export function CustomerCard({ customer, className }: CustomerCardProps) {
   return (
     <Card
       className={cn(
-        'p-4 cursor-pointer hover:bg-accent/50 transition-colors',
+        'p-3 sm:p-4 cursor-pointer hover:bg-accent/50 transition-colors active:bg-accent',
         className
       )}
       onClick={() => router.push(`/customers/${customer.id}`)}
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-3 sm:gap-4">
         <div className="min-w-0 flex-1 space-y-1">
-          <h3 className="font-medium truncate">{customer.name}</h3>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Phone className="h-3 w-3" />
-            <span>{customer.phone}</span>
+          <h3 className="font-medium truncate text-sm sm:text-base">{customer.name}</h3>
+          <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+            <Phone className="h-3 w-3 flex-shrink-0" />
+            <span className="truncate">{customer.phone}</span>
           </div>
           {customer.tags && customer.tags.length > 0 && (
             <TagList tags={customer.tags} size="sm" />
@@ -39,7 +39,9 @@ export function CustomerCard({ customer, className }: CustomerCardProps) {
             {formatDistanceToNow(new Date(customer.updated_at), { addSuffix: true })}
           </p>
         </div>
-        <StatusBadge status={customer.status} />
+        <div className="flex-shrink-0">
+          <StatusBadge status={customer.status} />
+        </div>
       </div>
     </Card>
   )

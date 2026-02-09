@@ -37,32 +37,43 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protected routes
-  const protectedRoutes = ['/', '/customers', '/follow-ups', '/settings']
-  const isProtectedRoute = protectedRoutes.some(
-    (route) =>
-      request.nextUrl.pathname === route ||
-      request.nextUrl.pathname.startsWith('/customers/')
-  )
+  const pathname = request.nextUrl.pathname
 
-  // Public routes
-  const publicRoutes = ['/login', '/register', '/welcome', '/forgot-password', '/reset-password']
-  const isPublicRoute = publicRoutes.includes(request.nextUrl.pathname)
+  // Auth routes
+  const isAuthRoute =
+    pathname === '/login' ||
+    pathname === '/register' ||
+    pathname === '/forgot-password' ||
+    pathname === '/reset-password'
 
-  // Lead form route (always public)
-  const isLeadFormRoute = request.nextUrl.pathname.startsWith('/form/')
+  // Public routes (docs, form)
+  const isPublicRoute =
+    pathname === '/' ||
+    pathname.startsWith('/docs') ||
+    pathname.startsWith('/form/')
 
-  if (!user && isProtectedRoute && !isLeadFormRoute) {
-    // Redirect to landing page if not authenticated
+  // Protected routes (dashboard pages)
+  const isProtectedRoute =
+    pathname.startsWith('/customers') ||
+    pathname.startsWith('/follow-ups') ||
+    pathname.startsWith('/settings')
+
+  // If public route, allow access
+  if (isPublicRoute) {
+    return supabaseResponse
+  }
+
+  // If not authenticated and trying to access protected routes
+  if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = '/welcome'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  if (user && isPublicRoute) {
-    // Redirect to home if already authenticated
+  // If authenticated and on auth pages, redirect to dashboard
+  if (user && isAuthRoute) {
     const url = request.nextUrl.clone()
-    url.pathname = '/'
+    url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 

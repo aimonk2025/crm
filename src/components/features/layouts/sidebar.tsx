@@ -53,7 +53,7 @@ export function Sidebar() {
   }
 
   const isCustomersSection =
-    pathname === '/' || pathname.startsWith('/customers')
+    pathname === '/customers' || pathname.startsWith('/customers')
 
   const isDashboard = pathname === '/dashboard'
   const isFollowUps = pathname.startsWith('/follow-ups')
@@ -62,7 +62,7 @@ export function Sidebar() {
   // Get current status from URL
   const currentStatus = pathname.startsWith('/customers/status/')
     ? pathname.split('/customers/status/')[1]
-    : pathname === '/'
+    : pathname === '/customers'
       ? 'all'
       : null
 
@@ -114,7 +114,7 @@ export function Sidebar() {
               {statusItems.map((item) => {
                 const href =
                   item.status === 'all'
-                    ? '/'
+                    ? '/customers'
                     : `/customers/status/${item.status}`
                 const isActive = currentStatus === item.status
 
@@ -168,13 +168,6 @@ export function Sidebar() {
       </nav>
 
       <div className="p-4 space-y-2">
-        <Button asChild className="w-full">
-          <Link href="/customers/new">
-            <Plus className="h-4 w-4 mr-2" />
-            Add Customer
-          </Link>
-        </Button>
-
         <Button
           variant="ghost"
           className="w-full justify-start text-muted-foreground"

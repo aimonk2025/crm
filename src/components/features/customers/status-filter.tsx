@@ -16,9 +16,10 @@ const statuses: { value: CustomerStatus | 'all'; label: string }[] = [
 interface StatusFilterProps {
   value: CustomerStatus | 'all'
   onChange: (value: CustomerStatus | 'all') => void
+  counts?: Record<CustomerStatus | 'all', number>
 }
 
-export function StatusFilter({ value, onChange }: StatusFilterProps) {
+export function StatusFilter({ value, onChange, counts }: StatusFilterProps) {
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
       {statuses.map((status) => (
@@ -33,6 +34,16 @@ export function StatusFilter({ value, onChange }: StatusFilterProps) {
           onClick={() => onChange(status.value)}
         >
           {status.label}
+          {counts && (
+            <span className={cn(
+              'ml-1.5 px-1.5 py-0.5 text-xs rounded-md',
+              value === status.value
+                ? 'bg-primary-foreground/20'
+                : 'bg-muted'
+            )}>
+              {counts[status.value]}
+            </span>
+          )}
         </Button>
       ))}
     </div>

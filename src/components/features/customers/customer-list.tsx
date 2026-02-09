@@ -25,6 +25,26 @@ export function CustomerList({
 
   const { data: customers, isLoading, error, refetch } = useCustomers()
 
+  // Calculate counts for each status
+  const statusCounts = useMemo(() => {
+    if (!customers) return { all: 0, new: 0, contacted: 0, in_progress: 0, completed: 0, lost: 0 }
+
+    const counts = {
+      all: customers.length,
+      new: 0,
+      contacted: 0,
+      in_progress: 0,
+      completed: 0,
+      lost: 0,
+    }
+
+    customers.forEach((customer) => {
+      counts[customer.status]++
+    })
+
+    return counts
+  }, [customers])
+
   // Client-side filtering for instant feedback
   const filteredCustomers = useMemo(() => {
     if (!customers) return []
@@ -52,7 +72,7 @@ export function CustomerList({
     return (
       <div className="space-y-4">
         <CustomerSearch value="" onChange={() => {}} />
-        {showStatusFilter && <StatusFilter value="all" onChange={() => {}} />}
+        {showStatusFilter && <StatusFilter value="all" onChange={() => {}} counts={undefined} />}
         <div className="space-y-2">
           {Array.from({ length: 5 }).map((_, i) => (
             <CustomerCardSkeleton key={i} />
@@ -75,7 +95,7 @@ export function CustomerList({
     <div className="space-y-4">
       <CustomerSearch value={search} onChange={setSearch} />
       {showStatusFilter && (
-        <StatusFilter value={statusFilter} onChange={setStatusFilter} />
+        <StatusFilter value={statusFilter} onChange={setStatusFilter} counts={statusCounts} />
       )}
 
       {filteredCustomers.length === 0 ? (

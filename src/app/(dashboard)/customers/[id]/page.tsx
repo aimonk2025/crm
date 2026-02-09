@@ -16,7 +16,7 @@ export default async function CustomerProfilePage({ params }: CustomerProfilePag
   const { id } = await params
 
   return (
-    <div className="container py-6 max-w-2xl">
+    <div className="container py-4 sm:py-6 max-w-4xl">
       <CustomerProfile customerId={id} />
     </div>
   )

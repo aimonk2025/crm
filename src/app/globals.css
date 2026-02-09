@@ -50,14 +50,14 @@
 :root {
   --radius: 0.625rem;
 
-  /* Theme Colors - Set by ThemeProvider */
+  /* Theme Colors */
   --color-primary: #0d0e0d;
   --color-primary-light: #2a2c2b;
   --color-primary-dark: #000000;
   --color-secondary: #c0c5ca;
   --color-secondary-light: #d6d9dc;
   --color-secondary-dark: #a5aaae;
-  --color-background: #e9e7e1;
+  --color-background: white;
   --color-background-dark: #dcdad4;
   --color-surface: #202322;
   --color-surface-light: #3a3d3c;
@@ -69,7 +69,7 @@
   /* Map theme colors to shadcn variables */
   --background: var(--color-background);
   --foreground: var(--color-primary);
-  --card: white;
+  --card: #f8f7f6;
   --card-foreground: var(--color-primary);
   --popover: white;
   --popover-foreground: var(--color-primary);
@@ -78,7 +78,7 @@
   --secondary: var(--color-secondary);
   --secondary-foreground: var(--color-primary);
   --muted: var(--color-background-dark);
-  --muted-foreground: var(--color-secondary-dark);
+  --muted-foreground: #202322;
   --accent: var(--color-accent);
   --accent-foreground: var(--color-background);
   --destructive: oklch(0.577 0.245 27.325);
@@ -140,5 +140,54 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Safe area insets for mobile devices */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Improve touch targets on mobile */
+  @media (max-width: 768px) {
+    button,
+    a {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Prevent horizontal scroll */
+  html {
+    overflow-x: hidden;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Marquee animation */
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 15s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }

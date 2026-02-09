@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { DashboardLayout } from '@/components/layouts/dashboard-layout'
+import { DashboardLayout } from '@/components/features/layouts/dashboard-layout'
 
 interface DashboardRouteLayoutProps {
   children: ReactNode

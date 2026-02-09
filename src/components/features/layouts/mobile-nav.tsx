@@ -12,7 +12,7 @@ const navItems = [
     icon: LayoutDashboard,
   },
   {
-    href: '/',
+    href: '/customers',
     label: 'Customers',
     icon: Users,
   },
@@ -38,12 +38,12 @@ export function MobileNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background md:hidden safe-area-inset-bottom">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const isActive =
-            item.href === '/'
-              ? pathname === '/' || (pathname.startsWith('/customers') && pathname !== '/customers/new')
+            item.href === '/customers'
+              ? pathname === '/customers' || (pathname.startsWith('/customers') && pathname !== '/customers/new')
               : item.href === '/dashboard'
                 ? pathname === '/dashboard'
                 : pathname.startsWith(item.href)
@@ -53,16 +53,16 @@ export function MobileNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex flex-col items-center justify-center flex-1 h-full gap-1 text-xs transition-colors',
+                'flex flex-col items-center justify-center flex-1 h-full gap-1 text-[10px] transition-colors active:bg-accent/50',
                 item.isAction
-                  ? 'text-primary'
+                  ? 'text-primary font-medium'
                   : isActive
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'text-primary font-medium'
+                    : 'text-muted-foreground'
               )}
             >
               <item.icon className={cn('h-5 w-5', item.isAction && 'h-6 w-6')} />
-              <span>{item.label}</span>
+              <span className="leading-tight">{item.label}</span>
             </Link>
           )
         })}

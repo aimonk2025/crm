@@ -18,6 +18,9 @@ export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
+  const DEMO_EMAIL = 'demo@simplecrm.app'
+  const DEMO_PASSWORD = 'demo123456'
+
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,7 +45,7 @@ export function LoginForm() {
       }
 
       toast.success('Welcome back!')
-      router.push('/')
+      router.push('/dashboard')
       router.refresh()
     } catch {
       toast.error('Something went wrong. Please try again.')
@@ -51,10 +54,32 @@ export function LoginForm() {
     }
   }
 
+  function handleDemoLogin() {
+    form.setValue('email', DEMO_EMAIL)
+    form.setValue('password', DEMO_PASSWORD)
+    form.handleSubmit(onSubmit)()
+  }
+
   return (
     <Card>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="pt-6 space-y-4">
+          <div className="bg-muted p-3 rounded-md border border-border">
+            <p className="text-xs font-medium text-foreground mb-1">Demo Credentials</p>
+            <p className="text-xs text-muted-foreground">Email: {DEMO_EMAIL}</p>
+            <p className="text-xs text-muted-foreground">Password: {DEMO_PASSWORD}</p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleDemoLogin}
+              disabled={isLoading}
+              className="mt-2 w-full"
+            >
+              {isLoading && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+              Login with Demo Account
+            </Button>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input

@@ -47,9 +47,9 @@ export function StatsCards() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-16">
       {/* Main Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <StatsCard
           title="Total Customers"
           value={stats.totalCustomers}
@@ -81,10 +81,10 @@ export function StatsCards() {
 
       {/* Customers by Status */}
       <div>
-        <h3 className="text-sm font-medium text-muted-foreground mb-3">
+        <h3 className="text-base font-semibold text-foreground mb-6">
           Customers by Status
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
           {(Object.keys(statusConfig) as Array<keyof typeof statusConfig>).map(
             (status) => {
               const config = statusConfig[status]
@@ -96,15 +96,17 @@ export function StatsCards() {
                   href={`/customers/status/${status}`}
                   className="block"
                 >
-                  <Card className="hover:bg-accent/50 transition-colors cursor-pointer">
-                    <CardContent className="p-4">
+                  <Card className="hover:shadow-md hover:border-border transition-all duration-200 cursor-pointer border-border/50">
+                    <CardContent className="p-3 sm:p-4">
                       <div className="flex items-center gap-3">
-                        <config.icon
-                          className={cn('h-5 w-5', config.color)}
-                        />
-                        <div>
-                          <p className="text-2xl font-bold">{count}</p>
-                          <p className="text-xs text-muted-foreground">
+                        <div className="p-2 rounded-lg bg-background">
+                          <config.icon
+                            className={cn('h-4 w-4 sm:h-5 sm:w-5', config.color)}
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-xl sm:text-2xl font-bold tracking-tight">{count}</p>
+                          <p className="text-xs text-muted-foreground truncate">
                             {config.label}
                           </p>
                         </div>
@@ -141,19 +143,19 @@ function StatsCard({
   const content = (
     <Card
       className={cn(
-        'transition-colors',
-        href && 'hover:bg-accent/50 cursor-pointer',
+        'transition-all duration-200 border-border/50',
+        href && 'hover:shadow-md hover:border-border cursor-pointer',
         highlight && 'border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950/20'
       )}
     >
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
+      <CardHeader className="flex flex-row items-center justify-between pb-3 space-y-0">
+        <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
-        <Icon className={cn('h-4 w-4', iconColor)} />
+        <Icon className={cn('h-4 w-4 sm:h-5 sm:w-5', iconColor)} />
       </CardHeader>
-      <CardContent>
-        <p className="text-2xl font-bold">{value}</p>
+      <CardContent className="pt-0">
+        <p className="text-xl sm:text-2xl font-bold tracking-tight">{value}</p>
       </CardContent>
     </Card>
   )

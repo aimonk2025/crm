@@ -2,7 +2,27 @@
 
 A simple, self-hosted customer memory system for small businesses.
 
-Built with Next.js 16, React 19, Supabase, and Tailwind CSS.
+## Tech Stack
+
+<p align="center">
+  <a href="https://nextjs.org">
+    <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  </a>
+  <a href="https://supabase.com">
+    <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+  </a>
+  <a href="https://react.dev">
+    <img src="https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  </a>
+  <a href="https://tailwindcss.com">
+    <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  </a>
+  <a href="https://www.typescriptlang.org">
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  </a>
+</p>
+
+Built with Next.js 15, React 19, Supabase, and Tailwind CSS.
 
 ## Features
 
@@ -290,14 +310,18 @@ SimpleCRM works on any platform that supports Next.js:
 
 ---
 
-## Tech Stack
+## Tech Stack Details
 
-- **Framework**: Next.js 16 (App Router)
-- **UI**: React 19, Tailwind CSS, shadcn/ui
-- **Database**: Supabase (PostgreSQL)
-- **Auth**: Supabase Auth
-- **State**: TanStack Query
-- **Forms**: React Hook Form + Zod
+| Category | Technology |
+|----------|------------|
+| **Framework** | Next.js 15 (App Router) |
+| **Frontend** | React 19, TypeScript |
+| **Styling** | Tailwind CSS, shadcn/ui |
+| **Database** | Supabase (PostgreSQL) |
+| **Auth** | Supabase Auth |
+| **State** | TanStack Query |
+| **Forms** | React Hook Form + Zod |
+| **Deployment** | Vercel, Railway, or self-hosted |
 
 ## Documentation
 
